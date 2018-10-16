@@ -1,13 +1,24 @@
 package com.mazzama.learnjwtspringsecurity.model;
 
-import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -18,18 +29,17 @@ import java.util.Set;
                 "email"
         })
 })
-public class User {
-
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min=3, max = 50)
     private String name;
 
     @NotBlank
-    @Size(min = 6, max = 50)
+    @Size(min=3, max = 50)
     private String username;
 
     @NaturalId
@@ -39,14 +49,16 @@ public class User {
     private String email;
 
     @NotBlank
-    @Size(min=6, max = 50)
+    @Size(min=6, max = 100)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    public User() {}
 
     public User(String name, String username, String email, String password) {
         this.name = name;
@@ -63,20 +75,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

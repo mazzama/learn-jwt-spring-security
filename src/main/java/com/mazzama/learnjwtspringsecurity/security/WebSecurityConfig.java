@@ -24,6 +24,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
+    public void setUserDetailsService(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
     @Autowired
     private JwtAuthEntryPoint unauthorizedHandler;
 
